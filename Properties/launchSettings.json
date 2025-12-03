@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "adventofcode2025": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "APP_MODE": "DEBUG"
+      }
+    }
+  }
+}
