@@ -1,9 +1,6 @@
 
 using App;
-using System.Diagnostics;
-using System.Linq.Expressions;
-using System.Security;
-using System.Text.RegularExpressions;
+
 namespace Days;
 
 public class Day1 : ISolve
@@ -34,34 +31,37 @@ public class Day1 : ISolve
         {
 
             var cleanLine = line.Replace("L", "-").Replace("R", "+");
-
             _ = int.TryParse(cleanLine, out int jump);
             var p = GetNextPointer(pointerPosition, jump);
-
+            pointerPosition = p.Item1;
             zeroCounter += p.Item2;
         }
 
-        // 5782
         return $"{zeroCounter}";
     }
 
 
-    private static (int, int) GetNextPointer(int currentPosition, int jumps)
+    public static (int, int) GetNextPointer(int currentPosition, int jumps)
     {
         var newRawPos = currentPosition + jumps;
 
         var currentpos = Mod(newRawPos, 100);
 
+        var zerosMet = Math.Abs(newRawPos / 100);
 
+        if (newRawPos <= 0 && currentPosition != 0) {
+            zerosMet++;
+        }
 
-        return (currentpos, 0);
+        return (currentpos, zerosMet);
     }
-
 
     public static int Mod(int a, int b)
     {
         return (a % b + b) % b;
     }
 }
+
+
 
 
