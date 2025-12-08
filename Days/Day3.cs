@@ -47,22 +47,22 @@ namespace Days
 
             var batteriesTurnOne = new List<Battery>();
 
-            var bs = batteries ;
-            var j = new List<Battery>();
+   
+            var selectedCandidates = new List<Battery>();
 
             for (int i = 0; i < totalBatteriesToTurnOn; i++)
             {
-                var minIndex = j.Count != 0 ? j[i - 1].Index : -1;
+                var minIndex = selectedCandidates.Count != 0 ? selectedCandidates[i - 1].Index : -1;
                 var wightlimit = totalBatteriesToTurnOn - i;
-                var listCandidates = bs.Where(x => x.DigitWeight >= wightlimit && x.Index > minIndex).OrderByDescending(x => x.Joltage).ToList();
+                var listCandidates = batteries.Where(x => x.DigitWeight >= wightlimit && x.Index > minIndex).OrderByDescending(x => x.Joltage).ToList();
                 var hs = listCandidates.FirstOrDefault();
                 if (hs != null)
                 {
-                    j.Add(hs);
+                    selectedCandidates.Add(hs);
                 }
             }
 
-            return j.Select(x => x.Joltage).ToArray();
+            return selectedCandidates.Select(x => x.Joltage).ToArray();
         }
 
     }
