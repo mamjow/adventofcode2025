@@ -6,10 +6,11 @@ namespace Days
     {
         public string SolvePartOne(string[] input)
         {
-            var totalJoltage = 0;
+            long totalJoltage = 0;
             foreach (var bank in input)
             {
-                totalJoltage += GetBackJoltage(bank);
+                var j = GetBankJoltage(bank, 2);
+                totalJoltage += long.Parse(string.Join("", j));
 
             }
             return $"{totalJoltage}";
@@ -17,60 +18,60 @@ namespace Days
 
         public string SolvePartTwo(string[] input)
         {
+            long totalJoltage = 0;
+            foreach (var bank in input)
+            {
+                var j = GetBankJoltage(bank, 12);
+                totalJoltage += long.Parse(string.Join("", j));
 
-            return $"";
+            }
+            return $"{totalJoltage}";
         }
 
-        private int GetBackJoltage(string bank)
+
+        private int[] GetBankJoltage(string bank, int totalBatteriesToTurnOn = 2)
         {
-            var batteries = bank.ToList().Select((j, index) =>
+            var batteries = bank.Select((j, index) =>
             {
                 _ = int.TryParse(j.ToString(), out int joltage);
-                return new
+                // if its last bank then its weight is 1
+                var weight = bank.Length - index;
+                var digitWeight = Math.Min(weight, totalBatteriesToTurnOn);
+                return new Battery
                 {
-                    joltage,
-                    index
+                    Joltage = joltage,
+                    Index = index,
+                    DigitWeight = digitWeight,
                 };
-            }).OrderByDescending(x => x.joltage)
-            .GroupBy(x => x.joltage)
-            .ToDictionary(x => x.Key, x => x.OrderBy(x => x.index).ToList()).Values.ToList();
+            }).ToList();
 
-            // if ther is only max digit in list then 
-            if (batteries.Count == 1)
+            var batteriesTurnOne = new List<Battery>();
+
+            var bs = batteries ;
+            var j = new List<Battery>();
+
+            for (int i = 0; i < totalBatteriesToTurnOn; i++)
             {
-                return int.Parse($"{batteries[0][0].joltage}{batteries[0][0].joltage}");
+                var minIndex = j.Count != 0 ? j[i - 1].Index : -1;
+                var wightlimit = totalBatteriesToTurnOn - i;
+                var listCandidates = bs.Where(x => x.DigitWeight >= wightlimit && x.Index > minIndex).OrderByDescending(x => x.Joltage).ToList();
+                var hs = listCandidates.FirstOrDefault();
+                if (hs != null)
+                {
+                    j.Add(hs);
+                }
             }
 
-
-            int firtsMaxJoltageCandidateIndex = 0;
-            int SecondMaxJoltageCandidateIndex = 1;
-
-            var maxJoltageObj = batteries[firtsMaxJoltageCandidateIndex][0];
-
-            for (int i = SecondMaxJoltageCandidateIndex; i < batteries.Count;)
-            {
-                // if there is a lower number with higher index
-                if (batteries[i][0].index > maxJoltageObj.index )
-                {
-                    // nice
-                    return int.Parse($"{maxJoltageObj.joltage}{batteries[i][0].joltage}"); ;
-                }
-                else if( i != batteries.Count - 1)
-                {
-                    i++;
-                }
-                else
-                {
-                    // there is no hope for this joltage. pick nex candidate
-                    firtsMaxJoltageCandidateIndex = SecondMaxJoltageCandidateIndex;
-                    maxJoltageObj = batteries[SecondMaxJoltageCandidateIndex][0];
-                    i = 0;
-                    SecondMaxJoltageCandidateIndex = 0;
-                }
-            }
-    // last bad 16250
-            return int.Parse($"{maxJoltageObj.joltage}{batteries[SecondMaxJoltageCandidateIndex][0].joltage}"); ;
+            return j.Select(x => x.Joltage).ToArray();
         }
 
     }
+}
+class Battery
+{
+    public int Joltage { get; set; }
+    public int Index { get; set; }
+
+    public int DigitWeight { get; set; }
+
 }
