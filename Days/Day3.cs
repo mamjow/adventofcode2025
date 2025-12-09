@@ -46,8 +46,6 @@ namespace Days
             }).ToList();
 
             var batteriesTurnOne = new List<Battery>();
-
-   
             var selectedCandidates = new List<Battery>();
 
             for (int i = 0; i < totalBatteriesToTurnOn; i++)

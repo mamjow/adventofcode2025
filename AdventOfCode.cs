@@ -35,15 +35,16 @@ public class AdventOfCodeChallenge
         Console.WriteLine($"Day: {day[3..]}");
         try
         {
-            Console.WriteLine($"\tPart One: {solution.SolvePartOne(gamesTestinput)}");
+            Console.WriteLine($"\tPart One (Test Input): {solution.SolvePartOne(gamesTestinput)}");
             Console.WriteLine($"\tPart One: {solution.SolvePartOne(gamesinput)}");
 
-            Console.WriteLine($"\tPart Two: {solution.SolvePartTwo(gamesTestinput)}");
+            Console.WriteLine($"\tPart Two (Test Input): {solution.SolvePartTwo(gamesTestinput)}");
             Console.WriteLine($"\tPart Two: {solution.SolvePartTwo(gamesinput)}");
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
         }
 
     }
