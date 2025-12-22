@@ -48,7 +48,8 @@ namespace Days
             {
 
                 var cellsIncol = matRows.Select(x => x[colCell]).ToArray();
-                var numberst = ReadNumbersVertically(cellsIncol[..^1]);
+                // except the operator
+                var numberst = TransposeAndParse(cellsIncol[..^1]);
 
                 long rowAnswer = cellsIncol[^1].Trim() switch
                 {
@@ -111,7 +112,7 @@ namespace Days
             return slices;
         }
 
-        public static long[] ReadNumbersVertically(string[] input)
+        public static long[] TransposeAndParse(string[] input)
         {
             // start at x 0 y 1 to x 0 y length
             // each x itteration is a number
